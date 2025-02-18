@@ -1,15 +1,21 @@
+import express, { Request, Response } from "express";
+import multer from "multer";
+import cors from "cors";
+
 const app = express();     
-app.use(express.json());
-app.use(cors({
-origin: '*',
-    methods: ['GET', 'POST'],
-}));
+const upload = multer({ dest: "uploads/" });
 
-app.post('/', async (req: Request, res: Response) => { 
-    const { type } = req.body
-    const { authorization } = req.headers;
+app.use(cors());
 
-})
+//app.use(express.json());
+//app.use(cors({origin: '*',methods: ['GET', 'POST'],}));
+
+app.post("/upload", upload.single("file"), (req: Request, res: Response) => {
+    if (!req.file) {
+        return res.status(400).json({ error: "No file uploaded" });
+    }
+    res.json({ message: "File uploaded successfully!", filename: req.file.filename });
+});
 
 app.get('/', (req, res) => {
     res.send('Hello, world! The server is running!');
