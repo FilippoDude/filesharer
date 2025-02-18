@@ -7,7 +7,7 @@ interface CONFIG {
 }
 
 export var CONFIG: CONFIG = {
-    apiURL: "",
+    apiURL: "http://localhost:3000",
     tags:{
         space: "USER",
         layout: "STANDARD",

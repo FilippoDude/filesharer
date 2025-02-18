@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FileInterface } from "../../../../common/interfaces";
 import axios from "axios"
-import { CONFIG } from "../../../../CONFIG";
+import { CONFIG } from "../../../../config";
 
 export const FilesCatcher = ({className} : {className: string}) => {   
     const [file, setFile] = useState<File | null>(null);
@@ -11,13 +11,14 @@ export const FilesCatcher = ({className} : {className: string}) => {
     const uploadFile = async () => {
         if (!file) return;
 
-        const formData = new FormData();
+        const formData = new FormData();    
         formData.append("file", file);
 
         try {
             const response = await axios.post(CONFIG.apiURL + "/upload", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
+                    timeout: 10000
                 },
             });
 
@@ -50,6 +51,7 @@ export const FilesCatcher = ({className} : {className: string}) => {
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
             setFile(event.target.files[0]);
+            uploadFile()
         }
     };
 
