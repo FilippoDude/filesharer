@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import TagsPopup from "./components/tagsPopup";
 import TagsDisplay from "./components/tagsDisplay";
 
-export const Search = ({className, setUpdater} : {className: string, setUpdater: Dispatch<SetStateAction<number>>}) => {   
+export const Search = ({className, setUpdater, setShowLoginPopUp, hasToken} : {className: string, setUpdater: Dispatch<SetStateAction<number>>, setShowLoginPopUp: Dispatch<SetStateAction<boolean>>, hasToken: boolean}) => {   
     const [isEnabled, setIsEnabled] = useState<boolean>(false);
 
     return(
@@ -12,7 +12,7 @@ export const Search = ({className, setUpdater} : {className: string, setUpdater:
                     <button onClick={() => setIsEnabled(prev => !prev)} className="w-16 h-full bg-yellow-400 rounded-l-md "></button>
                     <input className="w-full bg-yellow-500 text-white pl-2"></input>
                 </div>
-                <TagsPopup className="relative w-8/12 bg-yellow-400 rounded-md" isEnabled={isEnabled} setUpdater={setUpdater}/>
+                <TagsPopup className="relative w-8/12 bg-yellow-400 rounded-md" isEnabled={isEnabled} setUpdater={setUpdater} setShowLoginPopUp={setShowLoginPopUp} hasToken={hasToken}/>
                 <TagsDisplay className="relative mt-1 w-8/12 h-10 bg-yellow-400 rounded-md flex items-center gap-1 p-1" />
             </div>
         </>

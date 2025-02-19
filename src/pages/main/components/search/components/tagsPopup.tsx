@@ -1,7 +1,8 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { CONFIG } from "../../../../../CONFIG";
+import { CONFIG } from "../../../../../config";
 
-export const TagsPopup = ({className, isEnabled, setUpdater} : {className: string, isEnabled: boolean, setUpdater: Dispatch<SetStateAction<number>>}) => {    
+
+export const TagsPopup = ({className, isEnabled, setUpdater, setShowLoginPopUp, hasToken} : {className: string, isEnabled: boolean, setUpdater: Dispatch<SetStateAction<number>>, setShowLoginPopUp: Dispatch<SetStateAction<boolean>>, hasToken: boolean}) => {    
 
     return(
         <>  
@@ -11,7 +12,7 @@ export const TagsPopup = ({className, isEnabled, setUpdater} : {className: strin
                         <h1 className="text-white font-semibold">SPACE:</h1>
                         <div className="flex flex-row gap-2">
                             <button className={`${CONFIG.tags.space == "PUBLIC" ? "bg-orange-600" : "bg-orange-400"} p-1 text-white rounded-md select-none`} onClick={() => {CONFIG.tags.space = "PUBLIC"; setUpdater(prev => ++prev)}}>PUBLIC</button>
-                            <button className={`${CONFIG.tags.space == "USER" ? "bg-orange-600" : "bg-orange-400"} p-1 text-white rounded-md select-none`} onClick={() => {CONFIG.tags.space = "USER"; setUpdater(prev => ++prev)}}>USER</button>
+                            <button className={`${CONFIG.tags.space == "USER" ? "bg-orange-600" : "bg-orange-400"} p-1 text-white rounded-md select-none`} onClick={() => {if(hasToken){CONFIG.tags.space = "USER"; setUpdater(prev => ++prev)}else{setShowLoginPopUp(true)}}}>USER</button>
                         </div>
                     </div>
                     <div className="flex flex-col">
