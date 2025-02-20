@@ -37,7 +37,6 @@ const validateToken = (req: Request, res: Response, next: Next) => {
         if(!decoded.userId || decoded.userId !== userIdentifier){
             throw new Error("Token invalid!");
         } 
-        console.log("SUCCESS")
         next();
     } catch(e){
         return res.status(403).json({"error": "Token is not valid!"});
