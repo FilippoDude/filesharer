@@ -11,9 +11,9 @@ export const Search = ({className, setUpdater, setShowLoginPopUp, setFiles} : {c
             <div className={className}>
                 <div className="mt-3 w-8/12 h-10  rounded-md flex flex-row">
                     <button onClick={() => setIsEnabled(prev => !prev)} className="w-16 h-full bg-yellow-400 rounded-l-md "></button>
-                    <input className="w-full bg-yellow-500 text-white pl-2"></input>
+                    <input className="w-full bg-yellow-500 text-white pl-2 rounded-r-md"></input>
                 </div>
-                <TagsPopup className="relative w-8/12 bg-yellow-400 rounded-md" isEnabled={isEnabled} setUpdater={setUpdater} setShowLoginPopUp={setShowLoginPopUp} setFiles={setFiles}/>
+                <TagsPopup className="relative w-8/12 bg-orange-700 rounded-md" isEnabled={isEnabled} setUpdater={setUpdater} setShowLoginPopUp={setShowLoginPopUp} setFiles={setFiles}/>
                 <TagsDisplay className="relative mt-1 w-8/12 h-10 bg-yellow-400 rounded-md flex items-center gap-1 p-1" />
             </div>
         </>

@@ -11,7 +11,7 @@ export const LoginPopup = ({setShowLoginPopUp} : {setShowLoginPopUp: Dispatch<Se
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     return(
-        <div className="fixed z-10 w-screen h-screen flex items-center justify-center">
+        <div className="fixed z-10 w-screen h-screen flex items-center justify-center backdrop-blur-sm">
             <div className="relative w-80 h-60 bg-orange-600 rounded-md p-2 flex flex-col">
                 <button className="text-white absolute top-0 right-2" onClick={() => setShowLoginPopUp(false)}>X</button>
                 <h1 className="text-white font-bold text-lg">LOGIN</h1>

@@ -21,9 +21,9 @@ export const MainPage = () => {
         <>
             {/*<FilesCatcher className="w-screen h-screen bg-green-600 fixed z-10"/>*/}
             {showLoginPopUp && <LoginPopup setShowLoginPopUp={setShowLoginPopUp}/> }
-            <div className="w-full min-h-screen bg-gray-100">
+            <div className="relative w-full min-h-screen h-screen overflow-y-hidden bg-gray-400">
                 <Search setUpdater={setUpdater} setShowLoginPopUp={setShowLoginPopUp} setFiles={setFiles} className=" relative w-full flex flex-col items-center"/>
-                <Files files={files} setShowLoginPopUp={setShowLoginPopUp} className=" relative w-full flex flex-col items-center"/>
+                <Files files={files} setShowLoginPopUp={setShowLoginPopUp} setFiles={setFiles} className="relative w-full h-full flex flex-col items-center mt-1"/>
             </div>
         </>
     );

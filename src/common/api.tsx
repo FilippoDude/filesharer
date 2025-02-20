@@ -15,6 +15,7 @@ export const login = async (username: string, password: string, setShowLoginPopU
         if(!response.data["token"]){throw new Error("Token not received!")};
         sessionStorage.setItem("token", response.data["token"])
         sessionStorage.setItem("user_identifier", response.data["user_identifier"])
+        sessionStorage.setItem("user_name", username)
         setShowLoginPopUp(false);
     } catch (error) {
         if(axios.isAxiosError(error)){
@@ -45,6 +46,7 @@ export const checkToken = async (setShowLoginPopUp: Dispatch<SetStateAction<bool
             }
         }
     }
+    sessionStorage.setItem("user_name", "") 
     setShowLoginPopUp(true);
     return false;
 }
@@ -63,8 +65,8 @@ export const getUserFiles = async (setShowLoginPopUp: Dispatch<SetStateAction<bo
                     },
                 });            
                 
-                console.log(response.data)
-                // setFiles(response.data["files"])
+                //console.log(response.data)
+                setFiles(response.data["files"])
                 return true;
             } catch (error) {
                 if(axios.isAxiosError(error)){
