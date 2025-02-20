@@ -1,11 +1,23 @@
 export interface User{
     id: string,
-    userId: string,
+    userName: string,
     passwordHash: string
 }
+export interface FileDataDatabase{
+    id: string;
+    userId: string;
+    fileName: string;
+}
+
+export interface FileData{
+    name: string;
+    extension: string;
+    size: number; 
+    createdAt: Date;
+    modifiedAt: Date;
+}
+
+
 export interface UserToken{
     userId: string,
-}
-export interface File{
-    name: string,
 }
