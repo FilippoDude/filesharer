@@ -1,8 +1,9 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import TagsPopup from "./components/tagsPopup";
 import TagsDisplay from "./components/tagsDisplay";
+import { FileData } from "../../../../common/interfaces";
 
-export const Search = ({className, setUpdater, setShowLoginPopUp, hasToken} : {className: string, setUpdater: Dispatch<SetStateAction<number>>, setShowLoginPopUp: Dispatch<SetStateAction<boolean>>, hasToken: boolean}) => {   
+export const Search = ({className, setUpdater, setShowLoginPopUp, setFiles} : {className: string, setUpdater: Dispatch<SetStateAction<number>>, setShowLoginPopUp: Dispatch<SetStateAction<boolean>>, setFiles: Dispatch<SetStateAction<FileData[]>>}) => {   
     const [isEnabled, setIsEnabled] = useState<boolean>(false);
 
     return(
@@ -12,7 +13,7 @@ export const Search = ({className, setUpdater, setShowLoginPopUp, hasToken} : {c
                     <button onClick={() => setIsEnabled(prev => !prev)} className="w-16 h-full bg-yellow-400 rounded-l-md "></button>
                     <input className="w-full bg-yellow-500 text-white pl-2"></input>
                 </div>
-                <TagsPopup className="relative w-8/12 bg-yellow-400 rounded-md" isEnabled={isEnabled} setUpdater={setUpdater} setShowLoginPopUp={setShowLoginPopUp} hasToken={hasToken}/>
+                <TagsPopup className="relative w-8/12 bg-yellow-400 rounded-md" isEnabled={isEnabled} setUpdater={setUpdater} setShowLoginPopUp={setShowLoginPopUp} setFiles={setFiles}/>
                 <TagsDisplay className="relative mt-1 w-8/12 h-10 bg-yellow-400 rounded-md flex items-center gap-1 p-1" />
             </div>
         </>

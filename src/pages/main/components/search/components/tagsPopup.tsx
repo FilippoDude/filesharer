@@ -1,8 +1,17 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { CONFIG } from "../../../../../config";
+import { checkToken, getUserFiles } from "../../../../../common/api";
+import { FileData } from "../../../../../common/interfaces";
 
 
-export const TagsPopup = ({className, isEnabled, setUpdater, setShowLoginPopUp, hasToken} : {className: string, isEnabled: boolean, setUpdater: Dispatch<SetStateAction<number>>, setShowLoginPopUp: Dispatch<SetStateAction<boolean>>, hasToken: boolean}) => {    
+export const TagsPopup = ({className, isEnabled, setUpdater, setShowLoginPopUp, setFiles} : {className: string, isEnabled: boolean, setUpdater: Dispatch<SetStateAction<number>>, setShowLoginPopUp: Dispatch<SetStateAction<boolean>>, setFiles: Dispatch<SetStateAction<FileData[]>>}) => {    
+
+    const changeSpaceToUser = async () => {
+        if(await getUserFiles(setShowLoginPopUp, setFiles)){
+            CONFIG.tags.space = "USER"; 
+            setUpdater(prev => ++prev);
+        }
+    }
 
     return(
         <>  
@@ -12,7 +21,7 @@ export const TagsPopup = ({className, isEnabled, setUpdater, setShowLoginPopUp, 
                         <h1 className="text-white font-semibold">SPACE:</h1>
                         <div className="flex flex-row gap-2">
                             <button className={`${CONFIG.tags.space == "PUBLIC" ? "bg-orange-600" : "bg-orange-400"} p-1 text-white rounded-md select-none`} onClick={() => {CONFIG.tags.space = "PUBLIC"; setUpdater(prev => ++prev)}}>PUBLIC</button>
-                            <button className={`${CONFIG.tags.space == "USER" ? "bg-orange-600" : "bg-orange-400"} p-1 text-white rounded-md select-none`} onClick={() => {if(hasToken){CONFIG.tags.space = "USER"; setUpdater(prev => ++prev)}else{setShowLoginPopUp(true)}}}>USER</button>
+                            <button className={`${CONFIG.tags.space == "USER" ? "bg-orange-600" : "bg-orange-400"} p-1 text-white rounded-md select-none`} onClick={changeSpaceToUser}>USER</button>
                         </div>
                     </div>
                     <div className="flex flex-col">

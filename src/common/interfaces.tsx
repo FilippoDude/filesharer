@@ -1,8 +1,7 @@
-export interface FileInterface {
-    name: string;     
-    size: number;       
-    type: string;       
-    extension: string;  
-    lastModified: Date;  
-    createdAt: Date;     
+export interface FileData{
+    name: string;
+    extension: string;
+    size: number; 
+    createdAt: Date;
+    modifiedAt: Date;
 }

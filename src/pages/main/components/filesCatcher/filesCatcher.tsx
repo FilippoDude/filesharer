@@ -1,32 +1,12 @@
-import { useState } from "react";
-import { FileInterface } from "../../../../common/interfaces";
+import { Dispatch, SetStateAction, useState } from "react";
 import axios from "axios"
 import { CONFIG } from "../../../../config";
+import { uploadFile } from "../../../../common/api";
 
-export const FilesCatcher = ({className} : {className: string}) => {   
+export const FilesCatcher = ({className, setShowLoginPopUp} : {className: string, setShowLoginPopUp: Dispatch<SetStateAction<boolean>>}) => {   
     const [file, setFile] = useState<File | null>(null);
     const [dragging, setDragging] = useState(false);
 
-    // Upload file
-    const uploadFile = async () => {
-        if (!file) return;
-
-        const formData = new FormData();    
-        formData.append("file", file);
-
-        try {
-            const response = await axios.post(CONFIG.apiURL + "/upload", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    timeout: 10000
-                },
-            });
-
-            console.log("File uploaded:", response.data);
-        } catch (error) {
-            console.error("Upload failed", error);
-        }
-    };
 
     // Drop handling
     const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
@@ -51,7 +31,7 @@ export const FilesCatcher = ({className} : {className: string}) => {
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
             setFile(event.target.files[0]);
-            uploadFile()
+            if(file)uploadFile(setShowLoginPopUp,file)
         }
     };
 
