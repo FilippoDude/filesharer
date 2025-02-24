@@ -131,7 +131,6 @@ export const downloadFile = async (setShowLoginPopUp: Dispatch<SetStateAction<bo
 
                 const blob = await response.blob();
                 const url = window.URL.createObjectURL(blob);
-
                 const a = document.createElement("a");
                 a.href = url;
                 a.download = fileId; 
@@ -144,4 +143,32 @@ export const downloadFile = async (setShowLoginPopUp: Dispatch<SetStateAction<bo
             }
         }
     }
+};
+
+export const removeFile = async (setShowLoginPopUp: Dispatch<SetStateAction<boolean>>, fileId: string) : Promise<boolean> => {
+    const userId = sessionStorage.getItem("user_identifier");
+    const token = sessionStorage.getItem("token");
+    
+    if(await checkToken(setShowLoginPopUp)){
+        if(token && userId){
+            try {
+                const response = await axios.post(CONFIG.apiURL + `/remove/${userId}/${fileId}`, {}, {
+                    headers: {
+                        'user_identifier': userId,
+                        'token': token,
+                    },
+                });            
+                
+                //console.log(response.data)
+                return true;
+            } catch (error) {
+                if(axios.isAxiosError(error)){
+                    console.log(error.response?.data?.error || "Failed to remove file!")
+                } else {
+                    console.log("Error while trying to remove a user file!")
+                }
+            }
+        }
+    }
+    return false
 };

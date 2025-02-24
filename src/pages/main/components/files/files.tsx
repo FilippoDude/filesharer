@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { FileData } from "../../../../common/interfaces";
-import { downloadFile, getUserFiles, uploadFile } from "../../../../common/api";
+import { downloadFile, getUserFiles, removeFile, uploadFile } from "../../../../common/api";
 
 
 export const Files = ({className, files, setShowLoginPopUp, setFiles} : {className: string, files: FileData[], setShowLoginPopUp: Dispatch<SetStateAction<boolean>>, setFiles: Dispatch<SetStateAction<FileData[]>>}) => {   
@@ -23,11 +23,12 @@ export const Files = ({className, files, setShowLoginPopUp, setFiles} : {classNa
                 </div>
                 <div className="relative w-8/12 h-full bg-yellow-500 flex items-center p-2 flex-col gap-1">
                     {files.map(file => (
-                        <div key={file.name} className="relative w-10/12 h-20 bg-orange-600 rounded-md p-2">
+                        <div key={file.name} className="relative w-10/12 min-h-20 h-20 bg-orange-600 rounded-md p-2">
                             <h1 className="text-white font-bold">{file.name}</h1>
                             <p className=" text-white font-bold opacity-80">{file.size}b</p>
                             <h1 className="absolute top-2 right-2 text-white font-bold">12/01/2000</h1>
-                            <button className="absolute right-2 bottom-2 bg-green-500 bg-opacity-50 p-1 rounded-md text-white font-bold">Download</button>
+                            <button onClick={() => downloadFile(setShowLoginPopUp, file.fileId)} className="absolute right-20 bottom-2 bg-green-500 bg-opacity-50 p-1 rounded-md text-white font-bold">Download</button>
+                            <button onClick={() => {removeFile(setShowLoginPopUp, file.fileId); getUserFiles(setShowLoginPopUp, setFiles)}} className="absolute right-2 bottom-2 bg-red-500 bg-opacity-50 p-1 rounded-md text-white font-bold">Remove</button>
                         </div>
                     ))}
                 </div>
