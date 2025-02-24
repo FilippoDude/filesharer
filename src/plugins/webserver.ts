@@ -112,7 +112,6 @@ app.post("/validate", validateToken, async (req: Request, res: Response) => {
 
 app.post("/getFiles", validateToken, async (req: Request, res: Response) => {
     const userIdentifier = req.headers["user_identifier"] as string;
-    console.log(userFiles.getFiles(userIdentifier))
     return res.json({"files": userFiles.getFiles(userIdentifier)})
 });
 
@@ -129,7 +128,7 @@ app.get("/download/:userId/:fileId", validateToken, async (req: Request, res: Re
         const filePath = path.join(path.join(FILES_PATH, userIdentifier), fileId);
         res.download(filePath, file.fileName, (err) => {
             if (err) {
-                res.status(500).json({ error: "Error downloading file" });
+                return res.status(500).json({ error: "Error downloading file" });
             }
         });
     } else {
@@ -137,6 +136,28 @@ app.get("/download/:userId/:fileId", validateToken, async (req: Request, res: Re
     }
 });
 
+app.use('/remove/:userId/:fileId', validateToken, async (req: Request, res: Response) => {
+    const fileId = req.params.fileId;
+    const userIdentifier = req.params.userId;
+    const userIdentifierHeader = req.headers["user_identifier"] as string;
+
+    const user = userModel.getUser(userIdentifier);
+    const userHeader = userModel.getUser(userIdentifierHeader);
+    const file = fileModel.getFile(fileId);
+
+    console.log(user)
+    console.log(userHeader)
+    console.log(file)
+
+    if(user && file && userHeader && user.id == file.userId && user.id == userHeader.id){
+        fileModel.removeFile(fileId);
+        userFiles.removeFile(user.id, fileId);
+        return res.status(200).json({"success": true});
+    } else {
+        return res.status(404).json({ error: "File not found or unauthorized!" });
+    }
+
+})
 
 app.get('/', (req, res) => {
     res.send('^_^');

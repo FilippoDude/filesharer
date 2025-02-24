@@ -26,4 +26,7 @@ export default class fileModel{
         const stmt = database.prepare("SELECT * FROM files WHERE id = ?");
         return stmt.get(fileId) as FileDataDatabase | undefined;
     } 
+    static removeFile(fileId: string): void {
+        const stmt = database.prepare("SELECT * FROM files WHERE id = ?");
+    } 
 }
