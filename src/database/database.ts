@@ -12,8 +12,13 @@ database.exec(`
   CREATE TABLE IF NOT EXISTS files (
     id TEXT PRIMARY KEY, 
     userId TEXT NOT NULL, 
-    fileName TEXT NOT NULL, 
-    FOREIGN KEY(userId) REFERENCES users(id) ON DELETE CASCADE
+    fileName TEXT NOT NULL
+  )
+`);
+database.exec(`
+  CREATE TABLE IF NOT EXISTS public_files (
+    id TEXT PRIMARY KEY, 
+    fileName TEXT NOT NULL
   )
 `);
 export default database;
