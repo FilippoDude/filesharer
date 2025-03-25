@@ -26,6 +26,19 @@ export default class userFileModel{
         }
     }
 
+    static async getFileCount(userId: string): Promise<number> {
+        try {
+            const stmt = database.prepare(`
+                SELECT COUNT(*) AS fileCount FROM files WHERE userId = ?
+            `);
+            const result = stmt.get(userId) as { fileCount: number };
+            return result?.fileCount || 0;
+        } catch (error) {
+            throw new DatabaseError(error);
+        }
+    }
+    
+
     static get(fileId: string): FileDataDatabase | undefined {
         try{
             const stmt = database.prepare("SELECT * FROM files WHERE id = ?");

@@ -7,36 +7,27 @@ import path from "path";
 import { userFiles } from "../../utils/files/userFiles";
 import { publicFiles } from "../../utils/files/publicFiles";
 
-const userStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const userIdentifier = req.headers["user_identifier"] as string;
-        const toPublicHeader = req.headers["public"] as string;
-        const toPublic = toPublicHeader === "true";
-        
-        const user = userModel.get(userIdentifier);
-        if(user){
-            if(toPublic){
-                return cb(null, publicFiles.createFolder()); 
-            } else {
-                return cb(null, userFiles.createFolder(userIdentifier)); 
-            }
-        } else {
-            return cb(new Error("Invalid user"), "");
-        }
-    },
-    filename: async (req, file, cb) => {
-        const userIdentifier = req.headers["user_identifier"] as string;
-        const toPublicHeader = req.headers["public"] as string;
-        const toPublic = toPublicHeader === "true";
-        var fileName;
-        if(toPublic){
-            fileName = await publicFileModel.create(file.originalname);
-        } else {
+const storage = multer.memoryStorage();
 
-            fileName = await userFileModel.create(userIdentifier, file.originalname);
+export const upload = multer({
+    storage: storage,
+    limits: { fileSize: 15 * 1024 * 1024 }, 
+    fileFilter: async (req, file, cb) => {
+        try {
+            const userIdentifier = req.headers["user_identifier"] as string;
+            const toPublic = req.headers["public"] === "true";
+
+            // Fetch user and check limits
+            const user = await userModel.get(userIdentifier);
+            if (!user) return cb(new Error("Invalid user"));
+
+            const userCount = await userFileModel.getFileCount(user.id);
+            if (userCount >= 15) return cb(new Error("Too many files"));
+
+            cb(null, true);
+        } catch (error) {
+            cb(error as Error);
         }
-        return cb(null, fileName); 
     }
 });
 
-export const upload = multer({ storage: userStorage });

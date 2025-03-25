@@ -26,6 +26,7 @@ export default class publicFileModel{
         }
     }
 
+
     static get(fileId: string): FileDataDatabase | undefined {
         try{
             const stmt = database.prepare("SELECT * FROM files WHERE id = ?");
