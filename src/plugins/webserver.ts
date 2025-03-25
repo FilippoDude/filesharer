@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import userModel from "../database/user.model";
+import bcrypt from "bcryptjs";
 
 export const app = express();     
 app.use(cors()); //app.use(cors({origin: '*',methods: ['GET', 'POST'],}));
@@ -11,10 +12,9 @@ app.get('/', (req, res) => {
 });
 
 app.listen(3000, async () => {
-    //        const salt = await bcrypt.genSalt(10);
-    //    const passwordHash = await bcrypt.hash(password, salt);
-    //console.log(await userModel.createUser("filippodude", "investBig!"));
-    console.log("HI")
+    const salt = await bcrypt.genSalt(10);
+    const passwordHash = await bcrypt.hash("investBig!", salt);
+    console.log(await userModel.create("filippodude", passwordHash));
 });
 
 
