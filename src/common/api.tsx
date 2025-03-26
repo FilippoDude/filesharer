@@ -66,6 +66,7 @@ export const getUserFiles = async (setShowLoginPopUp: Dispatch<SetStateAction<bo
                 });            
                 
                 //console.log(response.data)
+                console.log(response.data)
                 setFiles(response.data["files"])
                 return true;
             } catch (error) {
@@ -75,6 +76,27 @@ export const getUserFiles = async (setShowLoginPopUp: Dispatch<SetStateAction<bo
                     console.log("Error while trying to get the user files!")
                 }
             }
+        }
+    }
+    setFiles([]);
+    
+    return false;
+}
+
+
+export const getPublicFiles = async (setFiles: Dispatch<SetStateAction<FileData[]>>) : Promise<boolean> => {   
+    try {
+        const response = await axios.post(CONFIG.apiURL + "/getPublicFiles", {}, {});            
+        
+        //console.log(response.data)
+        console.log(response.data["files"])
+        setFiles(response.data["files"])
+        return true;
+    } catch (error) {
+        if(axios.isAxiosError(error)){
+            console.log(error.response?.data?.error || "Failed to get files!")
+        } else {
+            console.log("Error while trying to get the user files!")
         }
     }
     setFiles([]);
@@ -99,6 +121,7 @@ export const uploadFile = async (setShowLoginPopUp: Dispatch<SetStateAction<bool
                         timeout: 10000,
                         'user_identifier': userId,
                         'token': token,
+                        'public': (CONFIG.tags.space == "PUBLIC" ? "true" : "false")
                     },
                 });
 
@@ -117,7 +140,8 @@ export const downloadFile = async (setShowLoginPopUp: Dispatch<SetStateAction<bo
     if(token && userId){
         if(await checkToken(setShowLoginPopUp)){
             try {
-                const response = await fetch(CONFIG.apiURL + `/download/${userId}/${fileId}`, {
+                const source = CONFIG.tags.space == "PUBLIC" ? "public" : userId;
+                const response = await fetch(CONFIG.apiURL + `/download/${source}/${fileId}`, {
                     method: "GET",
                     headers: {
                         'user_identifier': userId,
@@ -129,11 +153,22 @@ export const downloadFile = async (setShowLoginPopUp: Dispatch<SetStateAction<bo
                     throw new Error("Failed to download file");
                 }
 
+                const contentDisposition = response.headers.get("Content-Disposition");
+                console.log(contentDisposition)
+                let filename = fileId; 
+
+                if (contentDisposition) {
+                    const match = contentDisposition.match(/filename="(.+)"/);
+                    if (match && match[1]) {
+                        filename = match[1];
+                    }
+                }
+
                 const blob = await response.blob();
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement("a");
                 a.href = url;
-                a.download = fileId; 
+                a.download = filename; 
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);

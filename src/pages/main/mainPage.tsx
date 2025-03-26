@@ -6,6 +6,7 @@ import Files from "./components/files/files";
 import LoginPopup from "./components/loginPopup/loginPopup";
 
 import { FileData } from "../../common/interfaces";
+import { getPublicFiles } from "../../common/api";
 
 export const MainPage = () => {    
     const [updater, setUpdater] = useState<number>(0);
@@ -16,6 +17,9 @@ export const MainPage = () => {
     // Other
     const [files, setFiles] = useState<FileData[]>([]);
 
+    useEffect(() => {
+        getPublicFiles(setFiles);
+    }, [])
 
     return(
         <>

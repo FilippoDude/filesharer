@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { CONFIG } from "../../../../../config";
-import { checkToken, getUserFiles } from "../../../../../common/api";
+import { checkToken, getPublicFiles, getUserFiles } from "../../../../../common/api";
 import { FileData } from "../../../../../common/interfaces";
 
 
@@ -13,6 +13,13 @@ export const TagsPopup = ({className, isEnabled, setUpdater, setShowLoginPopUp, 
         }
     }
 
+    const changeSpaceToPublic = async () => {
+        if(await getPublicFiles(setFiles)){
+            CONFIG.tags.space = "PUBLIC"; 
+            setUpdater(prev => ++prev);
+        }
+    }
+
     return(
         <>  
             <div className={`${className} overflow-hidden transition-all duration-500 ${isEnabled ? "max-h-48 mt-1" : "max-h-0 mt-0"}`}>
@@ -20,7 +27,7 @@ export const TagsPopup = ({className, isEnabled, setUpdater, setShowLoginPopUp, 
                     <div className="flex flex-col">
                         <h1 className="text-white font-semibold">SPACE:</h1>
                         <div className="flex flex-row gap-2">
-                            <button className={`${CONFIG.tags.space == "PUBLIC" ? "bg-orange-600" : "bg-orange-400"} p-1 text-white rounded-md select-none`} onClick={() => {CONFIG.tags.space = "PUBLIC"; setUpdater(prev => ++prev)}}>PUBLIC</button>
+                            <button className={`${CONFIG.tags.space == "PUBLIC" ? "bg-orange-600" : "bg-orange-400"} p-1 text-white rounded-md select-none`} onClick={changeSpaceToPublic}>PUBLIC</button>
                             <button className={`${CONFIG.tags.space == "USER" ? "bg-orange-600" : "bg-orange-400"} p-1 text-white rounded-md select-none`} onClick={changeSpaceToUser}>{sessionStorage.getItem("user_name") ? sessionStorage.getItem("user_name") : "USER"}</button>
                         </div>
                     </div>

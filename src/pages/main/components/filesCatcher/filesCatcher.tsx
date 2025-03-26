@@ -7,7 +7,6 @@ export const FilesCatcher = ({className, setShowLoginPopUp} : {className: string
     const [file, setFile] = useState<File | null>(null);
     const [dragging, setDragging] = useState(false);
 
-
     // Drop handling
     const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
         event.preventDefault();
