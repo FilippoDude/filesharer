@@ -16,13 +16,14 @@ export const upload = multer({
         try {
             const userIdentifier = req.headers["user_identifier"] as string;
             const toPublic = req.headers["public"] === "true";
-
-            // Fetch user and check limits
-            const user = userModel.get(userIdentifier);
-            if (!user) return cb(new Error("Invalid user"));
-
-            const userCount = await userFileModel.getFileCount(user.id);
-            if (userCount >= 15) return cb(new Error("Too many files"));
+                // Fetch user and check limits
+                const user = userModel.get(userIdentifier);
+                if (!user) return cb(new Error("Invalid user"));
+            
+            if(!toPublic){
+                const userCount = await userFileModel.getFileCount(user.id);
+                if (userCount >= 15) return cb(new Error("Too many files"));
+            }
 
             cb(null, true);
         } catch (error) {

@@ -9,6 +9,7 @@ export class publicFileManagementService {
         const refinedFilesData: FileData[] = []
         const rawFilesData = publicFiles.getFiles();
         rawFilesData.forEach(file => {
+
             const databaseFile = publicFileModel.get(file.name);
             if(databaseFile){
                 refinedFilesData.push({

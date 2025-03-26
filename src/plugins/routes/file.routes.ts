@@ -15,6 +15,7 @@ app.post("/upload", validateToken, upload.single("file"), async (req: Request, r
             return res.status(400).json({ error: "No file uploaded!" });
         }
 
+        console.log("ANYTHING")
         const userIdentifier = req.headers["user_identifier"] as string;
         const toPublic = req.headers["public"] === "true";
 
@@ -27,6 +28,7 @@ app.post("/upload", validateToken, upload.single("file"), async (req: Request, r
 
         // Define file path
         const destinationPath = toPublic ? publicFiles.createFolder() : userFiles.createFolder(userIdentifier);
+        console.log(destinationPath)
         const filePath = `${destinationPath}/${fileName}`;
 
         // Write file to disk
